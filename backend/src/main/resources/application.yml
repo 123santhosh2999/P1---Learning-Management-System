@@ -9,9 +9,9 @@ app:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/lms?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: root
-    password: "root"
+    url: jdbc:postgresql://guvi_lms_userdb_user:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c@dpg-d5p5tsjvbchc738tt3hg-a.oregon-postgres.render.com/guvi_lms_userdb
+    username: guvi_lms_userdb_user
+    password: nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
   jpa:
     hibernate:
       ddl-auto: update
