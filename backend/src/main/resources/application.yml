@@ -9,9 +9,9 @@ app:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:}
-    username: ${SPRING_DATASOURCE_USERNAME:}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
+    url:jdbcpostgresql://guvi_lms_userdb_user:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c@dpg-d5p5tsjvbchc738tt3hg-a.oregon-postgres.render.com/guvi_lms_userdb
+    username: guvi_lms_userdb_user
+    password:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
   jpa:
     hibernate:
       ddl-auto: update
