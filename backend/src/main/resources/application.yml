@@ -1,17 +1,17 @@
 server:
-  port: 4000
+  port: ${PORT:4000}
 
 app:
   jwt:
-    secret: "change-me-change-me-change-me-change-me"
-    expiration-ms: 604800000
-  uploads-dir: "${user.dir}/uploads"
+    secret: ${APP_JWT_SECRET:change-me-change-me-change-me-change-me}
+    expiration-ms: ${APP_JWT_EXPIRATION_MS:604800000}
+  uploads-dir: ${APP_UPLOADS_DIR:${user.dir}/uploads}
 
 spring:
   datasource:
-    url: jdbc:postgresql://guvi_lms_userdb_user:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c@dpg-d5p5tsjvbchc738tt3hg-a.oregon-postgres.render.com/guvi_lms_userdb
-    username: guvi_lms_userdb_user
-    password: nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
+    url: ${SPRING_DATASOURCE_URL:}
+    username: ${SPRING_DATASOURCE_USERNAME:}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
   jpa:
     hibernate:
       ddl-auto: update
