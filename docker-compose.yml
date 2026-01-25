@@ -6,9 +6,9 @@ services:
     ports:
       - "4000:4000"
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_URL:postgresql://guvi_lms_userdb_user:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c@dpg-d5p5tsjvbchc738tt3hg-a.oregon-postgres.render.com/guvi_lms_userdb
+      SPRING_DATASOURCE_USERNAME: guvi_lms_userdb_user
+      SPRING_DATASOURCE_PASSWORD: nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
       APP_JWT_SECRET: ${APP_JWT_SECRET}
       APP_JWT_EXPIRATION_MS: ${APP_JWT_EXPIRATION_MS:-604800000}
 
