@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class JwtService {
+public class AuthService {
 
     private static final String SECRET =
             "mysecretkeymysecretkeymysecretkeymysecretkey"; // ≥32 chars
