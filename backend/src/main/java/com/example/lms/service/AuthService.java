@@ -1,6 +1,5 @@
 package com.example.lms.service;
 
-import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,8 @@ public class AuthService {
                         "role", role,
                         "name", name
                 ))
+            String token = jwtService.generateToken(user.getEmail());
+
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(key, SignatureAlgorithm.HS256)
