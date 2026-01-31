@@ -1,57 +1,39 @@
 package com.example.lms.service;
+package com.example.lms.security;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.example.lms.domain.Role;
-import com.example.lms.domain.User;
-import com.example.lms.dto.AuthDtos;
-import com.example.lms.repo.UserRepository;
-import com.example.lms.security.JwtService;
+import java.security.Key;
+import java.util.Date;
 
 @Service
-public class AuthService {
+public class JwtService {
 
-  private final UserRepository userRepo;
-  private final PasswordEncoder passwordEncoder;
-  private final JwtService jwtService;
+    private static final String SECRET =
+            "mysecretkeymysecretkeymysecretkeymysecretkey"; // ≥32 chars
 
-  public AuthService(UserRepository userRepo, PasswordEncoder passwordEncoder, JwtService jwtService) {
-    this.userRepo = userRepo;
-    this.passwordEncoder = passwordEncoder;
-    this.jwtService = jwtService;
-  }
+    private static final long EXPIRATION = 1000 * 60 * 60 * 24;
 
-  @Transactional
-  public AuthDtos.UserResponse signup(AuthDtos.SignupRequest req) {
-    if (userRepo.existsByEmail(req.email())) {
-      throw new IllegalArgumentException("Email already registered");
+    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+
+    public String generateToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
-
-    User user = new User();
-    user.setName(req.name());
-    user.setEmail(req.email());
-    user.setPasswordHash(passwordEncoder.encode(req.password()));
-
-    long count = userRepo.count();
-    user.setRole(count == 0 ? Role.ADMIN : Role.STUDENT);
-
-    User saved = userRepo.save(user);
-    return new AuthDtos.UserResponse(saved.getId(), saved.getName(), saved.getEmail(), saved.getRole());
-  }
-
-  @Transactional(readOnly = true)
-  public AuthDtos.LoginResponse login(AuthDtos.LoginRequest req) {
-    User user = userRepo.findByEmail(req.email())
-      .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
-
-    if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
-      throw new IllegalArgumentException("Invalid credentials");
+  
+    public String parse(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
-
-    String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name(), user.getName());
-    var userResp = new AuthDtos.UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
-    return new AuthDtos.LoginResponse(token, userResp);
-  }
 }
+
