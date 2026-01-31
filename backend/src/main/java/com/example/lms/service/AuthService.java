@@ -26,7 +26,6 @@ public class JwtService {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
-  
     public String parse(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -34,6 +33,8 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+        String email = jwtService.parse(token);
+
     }
 }
 
