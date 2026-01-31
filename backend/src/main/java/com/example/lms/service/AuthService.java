@@ -1,4 +1,4 @@
-package com.example.lms.security;
+package com.example.lms.service;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
