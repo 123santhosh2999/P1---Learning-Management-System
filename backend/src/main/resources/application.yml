@@ -1,27 +1,12 @@
-server:
-  port: ${PORT:8080}
 
-app:
-  jwt:
-    secret: ${APP_JWT_SECRET:change-me-change-me-change-me-change-me}
-    expiration-ms: ${APP_JWT_EXPIRATION_MS:604800000}
-  uploads-dir: ${APP_UPLOADS_DIR:${user.dir}/uploads}
+spring.datasource.url=jdbc:postgresql://dpg-d5p5tsjvbchc738tt3hg-a:5432/guvi_lms_userdb?sslmode=require
 
-spring:
-  datasource:
-    url:jdbcpostgresql://guvi_lms_userdb_user:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c@dpg-d5p5tsjvbchc738tt3hg-a.oregon-postgres.render.com/guvi_lms_userdb
-    username: guvi_lms_userdb_user
-    password:nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    open-in-view: false
+spring.datasource.username=guvi_lms_userdb_user
+spring.datasource.password=nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
 
-springdoc:
-  api-docs:
-    path: /api/docs
-  swagger-ui:
-    path: /api/docs/ui
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+server.port=${PORT:8080}
