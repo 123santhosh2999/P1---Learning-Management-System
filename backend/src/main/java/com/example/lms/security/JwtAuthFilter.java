@@ -33,7 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     if (header != null && header.startsWith("Bearer ")) {
       String token = header.substring("Bearer ".length());
       try {
-        JwtUserClaims claims = jwtService.parse(token);
+     String email = jwtService.parse(token);
 
         var authority = new SimpleGrantedAuthority("ROLE_" + claims.role());
         var auth = new UsernamePasswordAuthenticationToken(claims, null, java.util.List.of(authority));
