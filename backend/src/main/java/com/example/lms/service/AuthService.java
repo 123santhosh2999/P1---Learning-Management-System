@@ -4,6 +4,7 @@ import com.example.lms.domain.User;
 import com.example.lms.dto.AuthDtos;
 import com.example.lms.repo.UserRepository;
 import com.example.lms.security.JwtService;
+import com.example.lms.security.JwtUserClaims;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,12 @@ public class AuthService {
       throw new RuntimeException("Invalid credentials");
     }
 
-    String token = jwtService.generateToken(user.getEmail());
+    String token = jwtService.generateToken(new JwtUserClaims(
+      user.getId(),
+      user.getEmail(),
+      user.getRole().name(),
+      user.getName()
+    ));
     AuthDtos.UserResponse userResp = new AuthDtos.UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
     return new AuthDtos.LoginResponse(token, userResp);
   }

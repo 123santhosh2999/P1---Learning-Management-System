@@ -1,12 +1,14 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/lms?sslmode=disable}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
-spring.datasource.url=jdbc:postgresql://dpg-d5p5tsjvbchc738tt3hg-a:5432/guvi_lms_userdb?sslmode=require
-
-spring.datasource.username=guvi_lms_userdb_user
-spring.datasource.password=nUlCrSw8mRmUtqIlAufEHblEZLyVLs2c
-
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-
-server.port=${PORT:8080}
+server:
+  port: ${PORT:8080}
