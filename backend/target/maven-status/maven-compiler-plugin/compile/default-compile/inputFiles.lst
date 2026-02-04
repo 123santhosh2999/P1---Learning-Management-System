@@ -18,6 +18,7 @@ C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\
 C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\security\JwtUserClaims.java
 C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\web\LessonController.java
 C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\dto\AdminDtos.java
+C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\web\RootController.java
 C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\domain\Progress.java
 C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\repo\ProgressRepository.java
 C:\project files guivi\LMS_GIT\P1---Learning-Management-System\backend\src\main\java\com\example\lms\dto\CourseDtos.java
