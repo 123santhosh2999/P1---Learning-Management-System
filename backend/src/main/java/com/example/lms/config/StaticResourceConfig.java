@@ -12,7 +12,7 @@ public class StaticResourceConfig implements WebMvcConfigurer {
 
   private final Path uploadsDir;
 
-  public StaticResourceConfig(@Value("${app.uploads-dir}") String uploadsDir) {
+  public StaticResourceConfig(@Value("${app.uploads-dir:uploads}") String uploadsDir) {
     this.uploadsDir = Path.of(uploadsDir);
   }
 
