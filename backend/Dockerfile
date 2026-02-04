@@ -4,5 +4,5 @@ COPY target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
 COPY target/*.jar app.jar
+mvn clean package
 docker build -f Dockerfile.app -t lms-backend .
-target/
