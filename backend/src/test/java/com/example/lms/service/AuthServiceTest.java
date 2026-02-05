@@ -41,13 +41,20 @@ class AuthServiceTest {
     AuthDtos.SignupRequest req = new AuthDtos.SignupRequest("John", "john@example.com", "secret123");
 
     assertThatThrownBy(() -> authService.signup(req))
-      .isInstanceOf(RuntimeException.class)
+      .isInstanceOf(IllegalArgumentException.class)
       .hasMessageContaining("Email already exists");
   }
 
   @Test
   void login_success_returnsTokenAndUser() {
     User u = new User();
+    // id is used in JWT claims; set it for this unit test
+    try {
+      java.lang.reflect.Field f = User.class.getDeclaredField("id");
+      f.setAccessible(true);
+      f.set(u, 1L);
+    } catch (Exception ignored) {
+    }
     u.setName("John");
     u.setEmail("john@example.com");
     u.setPasswordHash("hash");

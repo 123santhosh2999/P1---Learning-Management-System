@@ -1,5 +1,6 @@
 package com.example.lms.service;
 
+import com.example.lms.domain.Role;
 import com.example.lms.domain.User;
 import com.example.lms.dto.AuthDtos;
 import com.example.lms.repo.UserRepository;
@@ -23,7 +24,7 @@ public class AuthService {
 
   public AuthDtos.UserResponse signup(AuthDtos.SignupRequest req) {
     if (userRepository.existsByEmail(req.email())) {
-      throw new RuntimeException("Email already exists");
+      throw new IllegalArgumentException("Email already exists");
     }
 
     User user = new User();
@@ -31,16 +32,20 @@ public class AuthService {
     user.setEmail(req.email());
     user.setPasswordHash(passwordEncoder.encode(req.password()));
 
+    if (userRepository.count() == 0) {
+      user.setRole(Role.ADMIN);
+    }
+
     User saved = userRepository.save(user);
     return new AuthDtos.UserResponse(saved.getId(), saved.getName(), saved.getEmail(), saved.getRole());
   }
 
   public AuthDtos.LoginResponse login(AuthDtos.LoginRequest req) {
     User user = userRepository.findByEmail(req.email())
-      .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+      .orElseThrow(() -> new IllegalStateException("Invalid credentials"));
 
     if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
-      throw new RuntimeException("Invalid credentials");
+      throw new IllegalStateException("Invalid credentials");
     }
 
     String token = jwtService.generateToken(new JwtUserClaims(
