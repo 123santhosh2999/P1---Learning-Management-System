@@ -26,7 +26,7 @@ class AuthControllerTest {
 
     mockMvc.perform(post("/api/auth/signup")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"name\":\"John\",\"email\":\"john@example.com\",\"password\":\"secret123\"}"))
+        .content("{\"name\":\"John\",\"email\":\"john@example.com\",\"password\":\"secret123\",\"role\":\"STUDENT\"}"))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$.id").value(1))
       .andExpect(jsonPath("$.email").value("john@example.com"));

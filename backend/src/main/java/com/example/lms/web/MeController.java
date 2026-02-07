@@ -31,7 +31,16 @@ public class MeController {
   public List<EnrollmentDtos.EnrollmentResponse> myEnrollments() {
     Long studentId = SecurityUtils.currentUserId();
     return lmsService.myEnrollments(studentId).stream()
-      .map(e -> new EnrollmentDtos.EnrollmentResponse(e.getId(), e.getCourse().getId(), e.getStudent().getId()))
+      .map(e -> new EnrollmentDtos.EnrollmentResponse(
+        e.getId(),
+        e.getCourse().getId(),
+        e.getCourse().getTitle(),
+        e.getCourse().getStatus(),
+        e.getCourse().getInstructor() != null ? e.getCourse().getInstructor().getId() : null,
+        e.getStudent().getId(),
+        e.getStudent().getName(),
+        e.getStudent().getEmail()
+      ))
       .toList();
   }
 }

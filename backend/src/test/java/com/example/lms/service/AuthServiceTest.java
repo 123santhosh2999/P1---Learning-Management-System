@@ -38,7 +38,7 @@ class AuthServiceTest {
   void signup_whenEmailExists_throws() {
     when(userRepository.existsByEmail("john@example.com")).thenReturn(true);
 
-    AuthDtos.SignupRequest req = new AuthDtos.SignupRequest("John", "john@example.com", "secret123");
+    AuthDtos.SignupRequest req = new AuthDtos.SignupRequest("John", "john@example.com", "secret123", Role.STUDENT);
 
     assertThatThrownBy(() -> authService.signup(req))
       .isInstanceOf(IllegalArgumentException.class)

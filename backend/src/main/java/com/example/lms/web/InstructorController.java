@@ -46,6 +46,18 @@ public class InstructorController {
     return CourseMapper.toDto(lmsService.updateCourse(instructorId, id, req, isAdmin()));
   }
 
+  @GetMapping("/courses")
+  public List<CourseDtos.CourseResponse> myCourses() {
+    Long instructorId = SecurityUtils.currentUserId();
+    return lmsService.myCourses(instructorId, isAdmin()).stream().map(CourseMapper::toDto).toList();
+  }
+
+  @GetMapping("/courses/{id}/lessons")
+  public List<LessonDtos.LessonResponse> lessons(@PathVariable Long id) {
+    Long instructorId = SecurityUtils.currentUserId();
+    return lmsService.courseLessonsForInstructor(instructorId, id, isAdmin()).stream().map(LessonMapper::toDto).toList();
+  }
+
   @PostMapping(value = "/courses/{id}/lessons", consumes = {"multipart/form-data"})
   @ResponseStatus(HttpStatus.CREATED)
   public LessonDtos.LessonResponse addLesson(
@@ -61,7 +73,16 @@ public class InstructorController {
   public List<EnrollmentDtos.EnrollmentResponse> enrollments(@PathVariable Long id) {
     Long instructorId = SecurityUtils.currentUserId();
     return lmsService.listCourseEnrollments(instructorId, id, isAdmin()).stream()
-      .map(e -> new EnrollmentDtos.EnrollmentResponse(e.getId(), e.getCourse().getId(), e.getStudent().getId()))
+      .map(e -> new EnrollmentDtos.EnrollmentResponse(
+        e.getId(),
+        e.getCourse().getId(),
+        e.getCourse().getTitle(),
+        e.getCourse().getStatus(),
+        e.getCourse().getInstructor() != null ? e.getCourse().getInstructor().getId() : null,
+        e.getStudent().getId(),
+        e.getStudent().getName(),
+        e.getStudent().getEmail()
+      ))
       .toList();
   }
 }

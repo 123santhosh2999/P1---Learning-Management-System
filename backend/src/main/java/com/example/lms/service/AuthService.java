@@ -32,9 +32,7 @@ public class AuthService {
     user.setEmail(req.email());
     user.setPasswordHash(passwordEncoder.encode(req.password()));
 
-    if (userRepository.count() == 0) {
-      user.setRole(Role.ADMIN);
-    }
+    user.setRole(req.role() != null ? req.role() : Role.STUDENT);
 
     User saved = userRepository.save(user);
     return new AuthDtos.UserResponse(saved.getId(), saved.getName(), saved.getEmail(), saved.getRole());

@@ -79,6 +79,23 @@ public class LmsService {
 
   // Instructor
 
+  @Transactional(readOnly = true)
+  public List<Course> myCourses(Long instructorId, boolean isAdmin) {
+    if (isAdmin) {
+      return courseRepo.findAll();
+    }
+    return courseRepo.findByInstructorIdOrderByIdDesc(instructorId);
+  }
+
+  @Transactional(readOnly = true)
+  public List<Lesson> courseLessonsForInstructor(Long instructorId, Long courseId, boolean isAdmin) {
+    Course course = courseRepo.findById(courseId).orElseThrow(() -> new IllegalArgumentException("Course not found"));
+    if (!isAdmin && !course.getInstructor().getId().equals(instructorId)) {
+      throw new IllegalArgumentException("Forbidden");
+    }
+    return lessonRepo.findByCourseIdOrderByOrderIndexAscIdAsc(courseId);
+  }
+
   @Transactional
   public Course createCourse(Long instructorId, CourseDtos.CreateCourseRequest req) {
     User instructor = userRepo.findById(instructorId).orElseThrow(() -> new IllegalArgumentException("User not found"));

@@ -1,27 +1,76 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext.jsx';
 
 export default function Layout({ title, links = [], children }) {
   const { user, logout } = useAuth();
 
+  const role = user?.role;
+  const nav = [];
+  if (role === 'STUDENT') {
+    nav.push(
+      { to: '/student', label: 'Dashboard' },
+      { to: '/student/courses', label: 'Browse Courses' }
+    );
+  }
+  if (role === 'INSTRUCTOR') {
+    nav.push(
+      { to: '/instructor', label: 'Dashboard' },
+      { to: '/instructor/courses', label: 'My Courses' }
+    );
+  }
+  if (role === 'ADMIN') {
+    nav.push(
+      { to: '/admin', label: 'Dashboard' },
+      { to: '/admin/users', label: 'Users' },
+      { to: '/admin/courses', label: 'Course Approvals' }
+    );
+  }
+
   return (
-    <div style={{ fontFamily: 'system-ui, Arial', padding: 16, maxWidth: 1100, margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div>
-          <div style={{ fontSize: 20, fontWeight: 700 }}>{title}</div>
-          <div style={{ fontSize: 12, opacity: 0.8 }}>{user?.email} ({user?.role})</div>
+    <div className="lms-shell">
+      <aside className="lms-sidebar">
+        <div className="lms-brand">
+          <div className="lms-brand-title">LMS</div>
+          <div className="lms-brand-subtitle">Learning Management System</div>
         </div>
-        <button onClick={logout} style={{ padding: '8px 12px', cursor: 'pointer' }}>Logout</button>
-      </div>
 
-      <div style={{ marginTop: 12, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        {links.map((l) => (
-          <Link key={l.to} to={l.to} style={{ textDecoration: 'none' }}>{l.label}</Link>
-        ))}
-      </div>
+        <nav className="lms-nav">
+          {nav.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => (isActive ? 'active' : undefined)}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
 
-      <div style={{ marginTop: 16 }}>{children}</div>
+      <main className="lms-main">
+        <div className="lms-topbar">
+          <div>
+            <div className="lms-title">{title}</div>
+            <div className="lms-meta">{user?.email} ({user?.role})</div>
+          </div>
+          <div className="lms-actions">
+            <button onClick={logout} className="lms-btn">Logout</button>
+          </div>
+        </div>
+
+        {links.length ? (
+          <div className="lms-row" style={{ marginTop: 12 }}>
+            {links.map((l) => (
+              <NavLink key={l.to} to={l.to}>
+                {l.label}
+              </NavLink>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="lms-content">{children}</div>
+      </main>
     </div>
   );
 }

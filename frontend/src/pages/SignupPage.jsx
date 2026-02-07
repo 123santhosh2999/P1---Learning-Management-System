@@ -9,13 +9,14 @@ export default function SignupPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('STUDENT');
   const [error, setError] = useState(null);
 
   async function onSubmit(e) {
     e.preventDefault();
     setError(null);
     try {
-      await signup(name, email, password);
+      await signup(name, email, password, role);
       navigate('/login');
     } catch (err) {
       setError(err?.response?.data?.message ?? 'Signup failed');
@@ -23,17 +24,24 @@ export default function SignupPage() {
   }
 
   return (
-    <div style={{ fontFamily: 'system-ui, Arial', padding: 16, maxWidth: 520, margin: '40px auto' }}>
-      <h2>Signup</h2>
-      {error ? <div style={{ color: 'crimson', marginBottom: 8 }}>{error}</div> : null}
-      <form onSubmit={onSubmit} style={{ display: 'grid', gap: 10 }}>
-        <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Create account</button>
-      </form>
-      <div style={{ marginTop: 12 }}>
-        Already have an account? <Link to="/login">Login</Link>
+    <div style={{ padding: 20, maxWidth: 560, margin: '28px auto' }}>
+      <div className="lms-card">
+        <h2 style={{ marginTop: 0 }}>Create account</h2>
+        {error ? <div className="lms-error" style={{ marginBottom: 10 }}>{error}</div> : null}
+        <form onSubmit={onSubmit} className="lms-grid">
+          <input className="lms-input" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input className="lms-input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input className="lms-input" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <select className="lms-select" value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="STUDENT">Student</option>
+            <option value="INSTRUCTOR">Instructor</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+          <button className="lms-btn lms-btn-primary" type="submit">Create account</button>
+        </form>
+        <div style={{ marginTop: 12 }}>
+          Already have an account? <Link to="/login">Login</Link>
+        </div>
       </div>
     </div>
   );
