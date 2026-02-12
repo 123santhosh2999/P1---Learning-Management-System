@@ -1,5 +1,8 @@
 package com.example.lms.web;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.lms.dto.ProgressDtos;
@@ -10,6 +13,8 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/lessons")
+@Tag(name = "Lessons", description = "Lesson progress endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class LessonController {
 
   private final LmsService lmsService;
@@ -19,6 +24,7 @@ public class LessonController {
   }
 
   @PostMapping("/{id}/progress")
+  @Operation(summary = "Update lesson progress", description = "Update progress for the current student in a lesson")
   public Object updateProgress(@PathVariable Long id, @Valid @RequestBody ProgressDtos.UpdateProgressRequest req) {
     Long studentId = SecurityUtils.currentUserId();
     var p = lmsService.updateLessonProgress(studentId, id, req.status());
